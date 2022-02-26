@@ -6,14 +6,14 @@
 \usage{
 copepod_url(
   ...,
-  name = c(NA, "us-04201")[1],
+  copepid = c(NA, "us-04201")[1],
   base_url = "https://www.st.nmfs.noaa.gov/copepod/data"
 )
 }
 \arguments{
 \item{...}{file path segments for use with \code{\link[base]{file.path}}}
 
-\item{name}{NA or char, if not NA then assumed to be a dataset name like 'us-04210' 
+\item{copepid}{NA or char, if not NA then assumed to be a dataset copepid like 'us-04210' 
 or the like.  If not NA then \code{...} arguments are ignored.}
 
 \item{base_url}{char, the root path to NMFS datasets}

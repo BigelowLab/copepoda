@@ -6,6 +6,7 @@ Version: 0.1
 Depends:
     R (>= 4.1)
 Imports:
+    utils,
     rlang,
     dplyr,
     readr,

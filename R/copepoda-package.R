@@ -4,6 +4,7 @@
 #'
 #' @docType package
 #' @importFrom rlang .data !! :=
+#' @importFrom utils download.file glob2rx unzip
 #' @name copepoda
 #' @aliases copepod
 NULL

@@ -7,7 +7,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-An R package to locally serve copepod data from [NOAA NMFS COPEPOD](https://www.st.nmfs.noaa.gov/copepod/) project. Thsi package assists in the download of online datasets and simplifies local management.
+An R package to locally serve copepod data from [NOAA NMFS COPEPOD](https://www.st.nmfs.noaa.gov/copepod/) project. This package assists in the download of online datasets and simplifies local management.
 
 Many of the data values are [coded](https://www.st.nmfs.noaa.gov/copepod/codes/), so it is important the user has a working familiarity with the data source.
 
@@ -35,14 +35,46 @@ The premise of this package is that data may be stored in a single location but 
 
 When the package is first loaded (ala `library(copepoda)`) the existence of the file is check, and if missing a warning is issued.
 
-You can create and populate that `~/.copepoda` using a text editors, or you can create using the provided function `set_data_path()`. Here is how the author created his own.
+You can create and populate that `~/.copepoda` using a text editors, or you can create using the provided function `set_data_path()`. Here is how the author created his own...
 
 ```
 library(copepoda)
 copepoda::set_data_path("/mnt/ecocast/coredata/noaa/nmfs/copepod")
 ```
 
-That's it.  If you even move the data you'll have to modify the contents of this hidden text file.
+That's it.  If you ever move the data you'll have to modify the contents of this hidden text file.
 
 ## Fetching new data
  
+To fetch new, or update a local copy, you must know the dataset's ID (aka `copepid`). Below we fetch a dataset from the [Scotian Shelf](https://www.st.nmfs.noaa.gov/copepod/data/ca-01003/index.html) which matches `copepid = ca-01003`.
+
+```{r}
+library(copepoda)
+ok <- fetch_copepod(copepid = "ca-01003")
+```
+
+Now the data directory will contain a subdirectory name `copepod__ca-01003`.  We can list the contents of the [short-form](https://www.st.nmfs.noaa.gov/copepod/data/us-04201/html_src/short-format_intro.html) dataset. 
+
+```{r}
+ff <- list_data(copepid = "ca-01003")
+head(ff)
+```
+OK - it only has one file.  Other datasets may have hundreds.
+
+## Reading local data
+
+It's is very simple to read the `short-form` data into a data frame (well, a tibble actually). Make your request by `copepid`... be advised some datasets have many many files and it can take a while to read then all in.
+
+```{r}
+x <- read_copepod(list_data(copepid = "ca-01003"), simplify = TRUE)
+dplyr::glimpse(x)
+```
+
+Alternatively, you can read the data in as a [sf](https://CRAN.R-project.org/package=sf) POINT object.
+
+```{r}
+x <- read_copepod(list_data(copepid = "ca-01003"), simplify = TRUE, form = 'sf')
+r <- range(x$value_per_vol)
+cex <- (x$value_per_vol - r[1])/(r[2]- r[1]) * 3
+plot(x['value_per_vol'], axes = TRUE, cex = cex)
+```

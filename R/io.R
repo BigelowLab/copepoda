@@ -90,16 +90,17 @@ copepod_shortform_types <- function(compress = TRUE){
 #' @param filename the name of the file
 #' @param skip the number of header lines to skip
 #' @param col_names a vector of columns names including a trailing 'dummy' which is dropped
+#' @param col_types a vector or compact character string used to declare input column types
 #' @return tibble
 read_copepod_shortform <- function(filename,
                                    skip = 17, 
                                    col_names = copepod_shortform_names(),
                                    col_types = copepod_shortform_types()){
-  readr::read_csv(filename, 
+  suppressWarnings(readr::read_csv(filename, 
                   skip = skip, 
                   col_names = col_names, 
                   col_types = col_types,
-                  show_col_types = FALSE) |>
+                  show_col_types = FALSE)) |>
     dplyr::select(-.data$dummy)
 }
 
@@ -113,7 +114,7 @@ read_copepod_shortform <- function(filename,
 #'   unless \code{simplify = TRUE}. 
 #' @param form character either 'tibble' or 'sf'
 #' @return tibble or sf Points object
-read_copepod <- function(filename = list_data(name = 'us-05101'),
+read_copepod <- function(filename = list_data(copepid = 'us-05101'),
                          simplify = TRUE,
                          select_vars = c("shp_cruise",
                                          "date", "lon", "lat",

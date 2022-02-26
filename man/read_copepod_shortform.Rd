@@ -17,6 +17,8 @@ read_copepod_shortform(
 \item{skip}{the number of header lines to skip}
 
 \item{col_names}{a vector of columns names including a trailing 'dummy' which is dropped}
+
+\item{col_types}{a vector or compact character string used to declare input column types}
 }
 \value{
 tibble

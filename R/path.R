@@ -29,22 +29,26 @@ get_data_path <- function(...,
 }
 
 #' Retrieve the path to one or more copepod datasets
-#' 
+#'
 #' @export
-list_data <- function(name = "us-04201",
+#' @param copepid character, the copepid of the data set ala "us-04201"
+#' @param form character, one of "short" or "full"
+#' @param path character the root path 
+#' @return character vector of filenames
+list_data <- function(copepid = "us-04201",
                       form = c("short", "full")[1],
-                      root = get_data_path()){
+                      path = get_data_path()){
                       
   if (tolower(form[1]) == "short"){
-    pattern = glob2rx(sprintf("*_%s.csv", name[1]))
+    pattern = glob2rx(sprintf("*_%s.csv", copepid[1]))
     form_segment <- "short-format"
   } else {
-    pattern = glob2rx(sprintf("*_%s.txt", name[1]))
+    pattern = glob2rx(sprintf("*_%s.txt", copepid[1]))
     form_segment <- "full-format"
   }
   
-  path <- file.path(root,
-                       sprintf("copepod__%s", name[1]),
+  path <- file.path(path,
+                       sprintf("copepod__%s", copepid[1]),
                        "data_src",
                        form_segment)
   list.files(path,
