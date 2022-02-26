@@ -57,6 +57,34 @@ copepod_shortform_names <- function(strip = TRUE){
   x
 }
 
+#' Retrieve a named vector of column types for copepod shortform
+#'
+#' @export
+#' @param compress logical, if TRUE transform into the \code{\link[readr]{read_delim}}
+#'   compact string codes
+#' @return named vector of column names or a character coding of such
+copepod_shortform_types <- function(compress = TRUE){
+    x = c(shp_cruise = "character", year = "numeric", month = "numeric", 
+        day = "numeric", timegmt = "numeric", timeloc = "numeric", lat = "numeric", 
+        lon = "numeric", zupper = "numeric", zlower = "numeric", towtype = "character", 
+        gear = "numeric", mesh = "numeric", nmfs_pgx = "numeric", itis_tsn = "numeric", 
+        mod = "numeric", lifestage_name = "numeric", lifestage = "numeric", 
+        sex = "numeric", value_type = "character", vol_water_strained = "character", 
+        original_value = "numeric", original_units = "character", value_per_vol = "numeric", 
+        value_per_vol_units = "character", global_ann_range_per_vol = "numeric", 
+        basin_ann_range_per_vol = "numeric", basin_ssn_range_per_vol = "numeric", 
+        basin_mon_range_per_vol = "numeric", value_per_area = "numeric", 
+        value_per_area_units = "character", global_ann_range_per_area = "numeric", 
+        basin_ann_range_per_area = "numeric", basin_ssn_range_per_area = "numeric", 
+        basin_mon_range_per_area = "numeric", sciname_modifiers = "character", 
+        record_id = "character", dataset_id = "character", ship = "numeric", 
+        project = "numeric", instituion = "numeric", orig_cruise_id = "character", 
+        orig_station_id = "numeric", taxa_name = "character", taxa_mod = "character",
+        dummy = "character" )
+  if (compress) x <- paste(sapply(x, substring, 1,1), collapse = "")
+  x
+}
+
 #' Read a short-form data file
 #'
 #' @param filename the name of the file
@@ -65,8 +93,13 @@ copepod_shortform_names <- function(strip = TRUE){
 #' @return tibble
 read_copepod_shortform <- function(filename,
                                    skip = 17, 
-                                   col_names = copepod_shortform_names()){
-  readr::read_csv(filename, skip = skip, col_names = col_names, show_col_types = FALSE) |>
+                                   col_names = copepod_shortform_names(),
+                                   col_types = copepod_shortform_types()){
+  readr::read_csv(filename, 
+                  skip = skip, 
+                  col_names = col_names, 
+                  col_types = col_types,
+                  show_col_types = FALSE) |>
     dplyr::select(-.data$dummy)
 }
 
@@ -82,9 +115,11 @@ read_copepod_shortform <- function(filename,
 #' @return tibble or sf Points object
 read_copepod <- function(filename = list_data(name = 'us-05101'),
                          simplify = TRUE,
-                         select_vars = c("date", "lon", "lat",
-                               "zupper", "zlower", "value_per_vol", 
-                               "value_per_area", "lifestage"),
+                         select_vars = c("shp_cruise",
+                                         "date", "lon", "lat",
+                                         "zupper", "zlower", 
+                                         "value_per_vol", "value_per_area", 
+                                         "lifestage", "lifestage_name"),
                          form = c("tibble", "sf")[1]){
   
   x <- lapply(filename, read_copepod_shortform) |>

@@ -2,6 +2,7 @@
 
 export(copepod_fetch)
 export(copepod_shortform_names)
+export(copepod_shortform_types)
 export(copepod_url)
 export(get_data_path)
 export(has_data_path)

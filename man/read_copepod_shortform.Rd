@@ -7,7 +7,8 @@
 read_copepod_shortform(
   filename,
   skip = 17,
-  col_names = copepod_shortform_names()
+  col_names = copepod_shortform_names(),
+  col_types = copepod_shortform_types()
 )
 }
 \arguments{

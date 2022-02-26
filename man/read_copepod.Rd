@@ -7,8 +7,8 @@
 read_copepod(
   filename = list_data(name = "us-05101"),
   simplify = TRUE,
-  select_vars = c("date", "lon", "lat", "zupper", "zlower", "value_per_vol",
-    "value_per_area", "lifestage"),
+  select_vars = c("shp_cruise", "date", "lon", "lat", "zupper", "zlower",
+    "value_per_vol", "value_per_area", "lifestage", "lifestage_name"),
   form = c("tibble", "sf")[1]
 )
 }
