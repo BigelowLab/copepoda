@@ -13,7 +13,7 @@ has_data_path <- function(filename = "~/.copepoda"){
 #' @param path char, the path to the data - like '/mnt/ecocast/coredata/noaa/nmfs/copepod'
 #' @param filename char, the name of the config files
 set_data_path <- function(path, filename = "~/.copepoda"){
-  cat(path[1], "\n", file = filename[1])
+  cat(path[1], sep = "\n", file = filename[1])
 }
 
 #' Retrieve the user specified data path
@@ -24,7 +24,6 @@ set_data_path <- function(path, filename = "~/.copepoda"){
 #' @return character, the path to the data
 get_data_path <- function(...,
                           root = readLines("~/.copepoda")){
-
   file.path(root, ...)
 }
 
